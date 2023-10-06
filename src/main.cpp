@@ -1,5 +1,10 @@
 #include "include/functions.h"
 #include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
 
 /*
 In the 20x20 grid below, four numbers along a diagonal have been marked red.
@@ -31,6 +36,16 @@ What is the greatest product of four adjacent numbers in the same direction (up,
 */
 
 int main() {
+    auto vec = func::txt_file_to_vector("num_grid.txt");
+    for (std::vector row : vec) {
+        for (int i = 0; i < static_cast<int>(row.size()); i++) {
+            if (i == static_cast<int>(row.size()) - 1) {
+                std::cout << row[i] << '\n';
+            } else {
+                std::cout << row[i] << " ";
+            }
+        }
+    }
 
     return 0;
 }
