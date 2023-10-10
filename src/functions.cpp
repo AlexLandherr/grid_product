@@ -2,16 +2,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <sstream>
 #include <algorithm>
-
-/*
-In the 20x20 grid below, four numbers along a diagonal have been marked red.
-
-The product of these numbers is 26x63x78x14 = 1788696.
-
-What is the greatest product of four adjacent numbers in the same direction (up, down, left, right or diagonally) in the 20x20 grid?
-*/
 
 namespace func {
     std::vector<std::vector<int>> txt_file_to_vector(std::string file_path) {
@@ -39,6 +30,8 @@ namespace func {
     }
 
     int find_greatest_grid_product(std::vector<std::vector<int>> grid) {
+        std::vector<int> prelim_results;
+        std::vector<int>::iterator max_product;
         /*Traversing grid via a four-number wide 'window' that scans from left to right;
         from the top row to the bottom row.*/
         int max_product_row = 0;
@@ -60,6 +53,8 @@ namespace func {
                 }
             }
         }
+
+        prelim_results.push_back(max_product_row);
 
         /*Traversing grid via a four-number wide 'window' that scans from top to bottom;
         from the leftmost column to the rightmost column.*/
@@ -86,6 +81,8 @@ namespace func {
             }
         }
 
+        prelim_results.push_back(max_product_column);
+
         /*Traversing grid via a four-number long diagonal 'line' that scans from left to right;
         with the diagonal's final number being positioned lower than the first (or pointing from the top left to the bottom right).*/
         int max_product_top_left_bottom_right_diagonal = 0;
@@ -103,5 +100,31 @@ namespace func {
                 }
             }
         }
+
+        prelim_results.push_back(max_product_top_left_bottom_right_diagonal);
+
+        /*Traversing grid via a four-number diagonal 'line' that scans from left to right;
+        with the diagonal's final number being positioned lower than the first (or pointing from the top right to the lower left).*/
+        int max_product_top_right_bottom_left_diagonal = 0;
+
+        for (int row = 0; row < (static_cast<int>(grid.size()) - 3); row++) {
+            for (int col = 3; col < static_cast<int>(grid.size()); col++) {
+                int a = grid[row][col];
+                int b = grid[row + 1][col - 1];
+                int c = grid[row + 2][col - 2];
+                int d = grid[row + 3][col - 3];
+                int temp_product = a * b * c * d;
+
+                if (temp_product > max_product_top_right_bottom_left_diagonal) {
+                    max_product_top_right_bottom_left_diagonal = temp_product;
+                }
+            }
+        }
+
+        prelim_results.push_back(max_product_top_right_bottom_left_diagonal);
+
+        max_product = std::max_element(prelim_results.begin(), prelim_results.end());
+
+        return *max_product;
     }
 }

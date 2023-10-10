@@ -36,7 +36,7 @@ What is the greatest product of four adjacent numbers in the same direction (up,
 */
 
 int main() {
-    auto vec = func::txt_file_to_vector("num_grid.txt");
+    /* auto vec = func::txt_file_to_vector("num_grid.txt");
     for (std::vector row : vec) {
         for (int i = 0; i < static_cast<int>(row.size()); i++) {
             if (i == static_cast<int>(row.size()) - 1) {
@@ -45,7 +45,9 @@ int main() {
                 std::cout << row[i] << " ";
             }
         }
-    }
+    } */
+    std::cout << "The greatest product of four adjacent numbers in the same direction (up, down, left, right or diagonally) in the 20x20 grid is:" << '\n';
+    std::cout << func::find_greatest_grid_product(func::txt_file_to_vector("num_grid.txt")) << '\n';
 
     return 0;
 }
