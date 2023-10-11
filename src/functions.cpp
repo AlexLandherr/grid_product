@@ -30,101 +30,51 @@ namespace func {
     }
 
     int find_greatest_grid_product(std::vector<std::vector<int>> grid) {
-        std::vector<int> prelim_results;
-        std::vector<int>::iterator max_product;
         /*Traversing grid via a four-number wide 'window' that scans from left to right;
         from the top row to the bottom row.*/
-        int max_product_row = 0;
+        int max_product = 0;
 
         for (int i = 0; i < static_cast<int>(grid.size()); i++) {
-            //Extract a single row.
-            std::vector<int> single_row = grid[i];
-
-            //Looping over the extracted row.
-            for (int j = 0; j < (static_cast<int>(single_row.size()) - 3); j++) {
-                int a = single_row[j];
-                int b = single_row[j + 1];
-                int c = single_row[j + 2];
-                int d = single_row[j + 3];
-                int temp_product = a * b * c * d;
-
-                if (temp_product > max_product_row) {
-                    max_product_row = temp_product;
+            for (int j = 0; j < (static_cast<int>(grid[i].size()) - 3); j++) {
+                if (grid[i][j] * grid[i][j + 1] * grid[i][j + 2] * grid[i][j + 3] > max_product) {
+                    max_product = grid[i][j] * grid[i][j + 1] * grid[i][j + 2] * grid[i][j + 3];
                 }
             }
         }
-
-        prelim_results.push_back(max_product_row);
 
         /*Traversing grid via a four-number wide 'window' that scans from top to bottom;
         from the leftmost column to the rightmost column.*/
-        int max_product_column = 0;
 
         for (int col = 0; col < static_cast<int>(grid.size()); col++) {
-            std::vector<int> single_column;
-
-            //Extract single column.
-            for (int i = 0; i < static_cast<int>(grid.size()); i++) {
-                single_column.push_back(grid[i][col]);
-            }
-
-            for (int k = 0; k < (static_cast<int>(single_column.size()) - 3); k++) {
-                int a = single_column[k];
-                int b = single_column[k + 1];
-                int c = single_column[k + 2];
-                int d = single_column[k + 3];
-                int temp_product = a * b * c * d;
-
-                if (temp_product > max_product_column) {
-                    max_product_column = temp_product;
+            for (int k = 0; k < (static_cast<int>(grid.size()) - 3); k++) {
+                if (grid[k][col] * grid[k + 1][col] * grid[k + 2][col] * grid[k + 3][col] > max_product) {
+                    max_product = grid[k][col] * grid[k + 1][col] * grid[k + 2][col] * grid[k + 3][col];
                 }
             }
         }
-
-        prelim_results.push_back(max_product_column);
 
         /*Traversing grid via a four-number long diagonal 'line' that scans from left to right;
         with the diagonal's final number being positioned lower than the first (or pointing from the top left to the bottom right).*/
-        int max_product_top_left_bottom_right_diagonal = 0;
 
         for (int row = 0; row < (static_cast<int>(grid.size()) - 3); row++) {
             for (int column = 0; column < (static_cast<int>(grid.size()) - 3); column++) {
-                int a = grid[row][column];
-                int b = grid[row + 1][column + 1];
-                int c = grid[row + 2][column + 2];
-                int d = grid[row + 3][column + 3];
-                int temp_product = a * b * c * d;
-
-                if (temp_product > max_product_top_left_bottom_right_diagonal) {
-                    max_product_top_left_bottom_right_diagonal = temp_product;
+                if (grid[row][column] * grid[row + 1][column + 1] * grid[row + 2][column + 2] * grid[row + 3][column + 3] > max_product) {
+                    max_product = grid[row][column] * grid[row + 1][column + 1] * grid[row + 2][column + 2] * grid[row + 3][column + 3];
                 }
             }
         }
-
-        prelim_results.push_back(max_product_top_left_bottom_right_diagonal);
 
         /*Traversing grid via a four-number diagonal 'line' that scans from left to right;
         with the diagonal's final number being positioned lower than the first (or pointing from the top right to the lower left).*/
-        int max_product_top_right_bottom_left_diagonal = 0;
 
         for (int row = 0; row < (static_cast<int>(grid.size()) - 3); row++) {
             for (int col = 3; col < static_cast<int>(grid.size()); col++) {
-                int a = grid[row][col];
-                int b = grid[row + 1][col - 1];
-                int c = grid[row + 2][col - 2];
-                int d = grid[row + 3][col - 3];
-                int temp_product = a * b * c * d;
-
-                if (temp_product > max_product_top_right_bottom_left_diagonal) {
-                    max_product_top_right_bottom_left_diagonal = temp_product;
+                if (grid[row][col] * grid[row + 1][col - 1] * grid[row + 2][col - 2] * grid[row + 3][col - 3] > max_product) {
+                    max_product = grid[row][col] * grid[row + 1][col - 1] * grid[row + 2][col - 2] * grid[row + 3][col - 3];
                 }
             }
         }
 
-        prelim_results.push_back(max_product_top_right_bottom_left_diagonal);
-
-        max_product = std::max_element(prelim_results.begin(), prelim_results.end());
-
-        return *max_product;
+        return max_product;
     }
 }
